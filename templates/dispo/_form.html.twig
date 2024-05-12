@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+    <p>
+        {{form_label(form.dateDebut,"Date de debut")}}
+        {{form_widget(form.dateDebut,{"attr":{"id":"dateDebut", "value":"", "class":"form-control"}})}}
+    </p>
+    <p>
+        {{form_label(form.dateFin,"Date de fin")}}
+        {{form_widget(form.dateFin,{"attr":{"id":"dateFin", "value":"", "class":"form-control"}})}}
+    </p>
+    <p>
+        {{form_label(form.prixParJour,"Prix par jour")}}
+        {{form_widget(form.prixParJour,{"attr":{"id":"prixParJour", "value":"", "class":"form-control", "placeholder":"Un nombre exemple: 50"}})}}
+    </p>
+    <p>
+        {{form_label(form.statut,"Disponibilité")}}
+        {{form_widget(form.statut,{"attr":{"id":"statut", "value":"", "class":"form-select"}})}}
+    </p>
+    <p>
+        {{form_label(form.vehicule,"Sélectionnez le véhicule par son modèle")}}
+        {{form_widget(form.vehicule,{"attr":{"id":"vehicule", "value":"", "class":"form-select"}})}}
+    </p>
+    {{ form_widget(form) }}
+    <button class="btn btn-success">{{ button_label|default('Créer') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %} 
+{% block title %}Dispo{% endblock %} 
+
+{% block body %}
+
+<div class="container mt-5 border p-5">
+  <h1 class="text-center">Cherchez vos véhicules disponibles par date</h1>
+    <div class="mt-5">
+        <label for="debut">Date de début:</label>
+        <input type="date" id="debut" name="debut" required class="form-control"/>
+    </div>
+    <div>
+        <label for="fin">Date de Fin:</label>
+        <input type="date" id="fin" name="fin" required class="form-control"/>
+    </div>
+    <div>
+        <label for="prix">Prix maximum:</label>
+        <input type="text" id="prix" name="prix" class="form-control" placeholder="un nombre exemple: 50"/>
+    </div>
+    <button type="submit" class="btn btn-success mt-4" onclick="chercher()">Rechercher</button>
+</div>
+
+<div class="container mt-5">
+<div class="row" id="vehiculeDispo">
+{% for dispo in dispos %}
+  <div class="card mb-3 me-4" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{asset('/uploads/vehicules/'~ dispo.vehicule.image|default('autodrive.jpg'))}}" style="height: 200px;" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Marque: {{dispo.vehicule.marque}}</h5>
+        <p class="card-text">Modèle: {{dispo.vehicule.modele}}</p>
+        <p class="card-text">{{dispo.prixParJour}} euros/J</p>
+        <p class="card-text">Disponible DU {{dispo.dateDebut|date('d/m/Y')}} AU {{dispo.dateFin|date('d/m/Y')}}</p>
+         <a href="{{ path('app_dispo_show', { id: dispo.id }) }}" class="btn btn-success">Afficher</a>
+        <a href="{{ path('app_dispo_edit', { id: dispo.id }) }}" class="btn btn-primary">Modifier</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<h2>Aucune disponibilité trouvée</h2>
+{% endfor %}
+</div>
+</div>
+
+{% endblock %} 
+
+{% block script %}
+<script>
+   
+
+  function chercher() {
+    let dateDebut = document.getElementById("debut").value;
+    let dateFin = document.getElementById("fin").value;
+    let prixMax = parseInt(document.getElementById("prix").value);
+    let url_search = "{{ path('app_dispo_search') }}";
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url_search);
+    let data = new FormData();
+    data.append("debut", dateDebut);
+    data.append("fin", dateFin);
+    data.append("prix", prixMax);
+    xhr.send(data);
+    xhr.onload = () => {
+      let response = xhr.responseText;
+      //console.log(response);
+     // alert(response);
+
+      let rows = JSON.parse(response);
+        
+        // console.log(rows);
+
+        
+        let html = '';
+        
+     
+        if (rows && rows.length > 0) {
+             
+            html = rows.map((row) => {
+                return `
+                    <div class="card mb-3 me-4" style="max-width: 540px;">
+                      <div class="row g-0">
+                        <div class="col-md-4">
+                          <img src="/uploads/vehicules/${row.photo}" style="height: 200px;" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h5 class="card-title">Marque: ${row.marque} ${row.modele}</h5>
+                            <p class="card-text">Modèle: ${row.modele} ${row.modele}</p>
+                            <p class="card-text">Modèle: ${row.prix} euros/J</p>
+                            <p class="card-text">Disponible du ${row.dateDebut} au ${row.dateFin}</p>
+                            <a href=" ${row.show_dispo_url}" class="btn btn-success">Afficher</a>
+                            <a href=" ${row.edit_dispo_url}" class="btn btn-primary">Modifier</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                `;
+            }).join(''); 
+        } else {
+            // Si aucun résultat trouvé, afficher un message
+            html = `<h2>Aucun resultat trouvé...</h2>`;
+        }
+        
+        // Injection du HTML généré dans un élément HTML avec l'ID vehiculeDispo
+        vehiculeDispo.innerHTML = html;
+        
+        // Réinitialisation des champs métier et région du formulaire
+        document.getElementById('debut').value = "";
+        document.getElementById('fin').value = "";
+        document.getElementById('prix').value = "";
+    };
+  };
+
+</script>
+{% endblock %}

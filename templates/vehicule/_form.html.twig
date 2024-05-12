@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+
+
+   <p>
+        {{form_label(form.marque,"Marque")}}
+        {{form_widget(form.marque,{"attr":{"id":"marque", "value":"", "class":"form-control"}})}}
+    </p>
+   <p>
+        {{form_label(form.modele,"Modèle")}}
+        {{form_widget(form.modele,{"attr":{"id":"modele", "value":"", "class":"form-control"}})}}
+    </p>
+   <p>
+        {{form_label(form.photo,"Photo")}}
+        {{form_widget(form.photo,{"attr":{"id":"photo", "value":"", "class":"form-control"}})}}
+    </p>
+   
+
+    {{ form_widget(form) }}
+    <button class="btn btn-success ">{{ button_label|default('Créer') }}</button>
+    
+{{ form_end(form) }}

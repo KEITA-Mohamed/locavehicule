@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vehicule{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+    <h1 class="text-center">Modifier le véhicule</h1>
+
+    <a href="{{ path('app_vehicule_index') }}" class="btn btn-primary mb-4">Retour</a>
+    {{ include('vehicule/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    </div>
+{% endblock %}

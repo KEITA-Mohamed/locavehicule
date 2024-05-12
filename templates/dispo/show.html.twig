@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dispo{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h1 class="text-center">{{dispo.vehicule.marque}} {{dispo.vehicule.modele}}</h1>
+
+    <a href="{{ path('app_dispo_index') }}" class="btn btn-primary">Retour</a>
+    <a href="{{ path('app_dispo_edit', {'id': dispo.id}) }}" class="btn btn-success">Modifier</a>
+    <table class="table mt-2">
+        <tbody>
+           
+            <tr>
+                <th>DateDebut</th>
+                <td>{{ dispo.dateDebut ? dispo.dateDebut|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateFin</th>
+                <td>{{ dispo.dateFin ? dispo.dateFin|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>PrixParJour</th>
+                <td>{{ dispo.prixParJour }} euros</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ dispo.statut }}</td>
+            </tr>
+            <tr>
+                <th>Date de création</th>
+                <td>{{ dispo.createdAt ? dispo.createdAt|date('d/m/Y') : '' }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+
+
+    {{ include('dispo/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

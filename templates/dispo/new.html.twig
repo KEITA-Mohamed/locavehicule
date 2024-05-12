@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Dispo{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+    <h1 class="text-center">Créer une nouvelle disponibilité</h1>
+
+    <a href="{{ path('app_vehicule_index') }}" class="btn btn-primary mb-4">Retour</a>
+    {{ include('dispo/_form.html.twig') }}
+    </div>
+{% endblock %}
